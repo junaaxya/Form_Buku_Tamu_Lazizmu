@@ -1,0 +1,100 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-8 col-lg-6">
+    <div class="card shadow-sm border-0 text-center p-4" style="border-radius: 16px;">
+      <div class="card-body">
+        <h6 class="text-success fw-bold mb-1">Assalamu’alaikum</h6>
+        <h3 class="fw-bold text-success mb-3">
+          LAZISMU<br>
+          <span class="text-muted fs-6">Kepulauan Bangka Belitung</span>
+        </h3>
+
+        <div class="p-3 border rounded bg-light mb-4 text-start">
+          <p class="text-muted mb-0" style="min-height: 100px;">
+            LAZISMU adalah lembaga amil zakat nasional yang berkhidmat dalam
+            pemberdayaan masyarakat melalui pendayagunaan dana zakat, infak, dan shadaqah.
+          </p>
+        </div>
+
+        <!-- Pertanyaan follow medsos -->
+        <div class="mb-3 text-start">
+          <label class="form-label fw-semibold mb-2">Sudah follow media sosial Lazismu?</label>
+
+          <div class="d-flex align-items-center gap-3 mb-2">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="follow" id="followYes" value="yes">
+              <label class="form-check-label" for="followYes">Ya</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="follow" id="followNo" value="no" checked>
+              <label class="form-check-label" for="followNo">Belum</label>
+            </div>
+          </div>
+
+          <div id="proofGroup" class="d-none">
+            <form method="post" action="{{ url_for('form_page') }}" method="get" enctype="multipart/form-data">
+              <label class="form-label">Upload bukti (screenshot)</label>
+              <input type="file" name="follow_proof" id="proofFile" class="form-control" accept="image/*">
+              <button type="submit" class="btn btn-outline-success btn-sm">Upload</button>
+            </form>
+
+            {% if session.get('follow_proof_tmp') %}
+              <div class="mt-2">
+                <img src="{{ url_for('media', filename='tmp/' ~ session.get('follow_proof_tmp')) }}"
+                     alt="Preview Bukti" class="img-fluid rounded" style="max-height:200px;">
+              </div>
+            {% endif %}
+          </div>
+        </div>
+
+        <a href="{{ url_for('form_page') }}" class="btn btn-primary px-4">Mulai Isi Buku Tamu</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const yes = document.getElementById('followYes');
+  const no  = document.getElementById('followNo');
+  const grp = document.getElementById('proofGroup');
+  const file = document.getElementById('proofFile');
+
+  function update() {
+    if (yes.checked) {
+      grp.classList.remove('d-none');
+    } else {
+      grp.classList.add('d-none');
+      if (file) file.value = ''; // bersihkan kalau ganti ke "Belum"
+    }
+  }
+
+  // === Upload otomatis ke server saat file dipilih ===
+  file?.addEventListener('change', async () => {
+    const f = file.files?.[0];
+    if (!f) return;
+    const formData = new FormData();
+    formData.append('proofFile', f);
+    try {
+      const res = await fetch('/upload_follow_proof', {
+        method: 'POST',
+        body: formData
+      });
+      const data = await res.json();
+      if (data.ok) {
+        console.log('Upload berhasil:', data.filename);
+      } else {
+        alert('Gagal upload bukti: ' + data.msg);
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Terjadi kesalahan upload bukti follow.');
+    }
+  });
+
+  yes?.addEventListener('change', update);
+  no?.addEventListener('change', update);
+})();
+</script>
+{% endblock %}

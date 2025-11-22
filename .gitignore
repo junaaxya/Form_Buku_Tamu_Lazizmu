@@ -1,0 +1,34 @@
+# =========================================================
+# FILE SENSITIF & KONFIGURASI LOKAL (WAJIB DIHINDARI)
+# =========================================================
+.env                                  # File Environment Variable lokal
+instance/                             # Folder instance Flask (biasanya untuk config atau db lokal)
+
+# =========================================================
+# PYTHON CACHE & VIRTUAL ENVIRONMENT
+# =========================================================
+# Byte-compiled / optimized / DLL files
+__pycache__/                          # Folder cache Python
+*.pyc
+*.$py.class
+
+# Virtual environments
+.venv/
+venv/                          # Virtual environment umum
+env/                                  # Virtual environment umum
+
+# =========================================================
+# UPLOADED MEDIA & LOG
+# =========================================================
+# Folder tempat file media diunggah
+# Ini sangat PENTING karena file ini bersifat sementara di PaaS
+# dan bisa memuat repository Anda.
+media/                                # Folder upload media
+*.log
+.DS_Store                             # File sistem macOS
+
+# =========================================================
+# TOOLING / DATABASE
+# =========================================================
+*.sqlite
+*.db

@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-lg-7">
+    <div class="card shadow-sm p-3 border-0" style="border-radius:16px;">
+      <div class="card-body">
+
+       <!-- Header -->
+        <div class="mb-4">
+          <div class="d-flex align-items-center justify-content-center">
+            <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Lazizmu Logo" style="height:60px; object-fit:contain;">
+          </div>
+          <div class="d-flex align-items-center justify-content-center">
+            <h4 class="fw-bold text-success mb-0">Buku Tamu</h4>
+          </div>
+          <h6 class="text-muted mt-2 d-flex align-items-center justify-content-center">LAZISMU Kepulauan Bangka Belitung</h6>
+        </div>
+
+
+        <!-- Form -->
+        <form method="post" enctype="multipart/form-data">
+          <div class="mb-3">
+            <label class="form-label">Tanggal</label>
+            <input type="date" class="form-control" value="{{ today_str }}" disabled>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">NIK (opsional)</label>
+            <input type="text" class="form-control" name="nik" placeholder="Masukkan NIK">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nama Lengkap</label>
+            <input type="text" class="form-control" name="name" required>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Alamat</label>
+            <textarea class="form-control" name="address" rows="2" placeholder="Masukkan alamat lengkap" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Asal Instansi (opsional)</label>
+            <input type="text" class="form-control" name="institution" placeholder="Nama instansi / organisasi (jika ada)">
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Keperluan</label>
+            <textarea class="form-control" name="purpose" rows="2" required></textarea>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Nomor HP (opsional)</label>
+            <input type="text" class="form-control" name="phone" placeholder="Masukkan nomor HP">
+          </div>
+
+
+          <!-- Foto -->
+          <div class="text-center mb-4">
+            <button type="button" id="btnPickCamera" class="btn btn-primary btn-sm">
+              Ambil Foto
+            </button>
+            <input type="file"
+                   id="inpCamera"
+                   name="photo_camera"
+                   accept="image/*"
+                   capture="environment"
+                   class="d-none">
+            <div class="mt-2">
+              <img id="uploadPreview" class="img-fluid rounded d-none" alt="Preview" style="max-height:200px;">
+            </div>
+          </div>
+
+          <!-- Submit -->
+          <div class="text-center">
+            <button class="btn btn-success px-4" type="submit">Kirim</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(() => {
+  const btnPickCamera = document.getElementById('btnPickCamera');
+  const inpCamera = document.getElementById('inpCamera');
+  const uploadPreview = document.getElementById('uploadPreview');
+
+  btnPickCamera?.addEventListener('click', () => inpCamera.click());
+
+  inpCamera?.addEventListener('change', () => {
+    const file = inpCamera.files?.[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+      uploadPreview.src = e.target.result;
+      uploadPreview.classList.remove('d-none');
+    };
+    reader.readAsDataURL(file);
+  });
+})();
+</script>
+{% endblock %}
