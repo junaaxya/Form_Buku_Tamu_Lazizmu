@@ -1,8 +1,8 @@
 # =========================================================
 # FILE SENSITIF & KONFIGURASI LOKAL (WAJIB DIHINDARI)
 # =========================================================
-.env                                  # File Environment Variable lokal
-instance/                             # Folder instance Flask (biasanya untuk config atau db lokal)
+.env                                  
+instance/                             
 
 # =========================================================
 # PYTHON CACHE & VIRTUAL ENVIRONMENT
@@ -15,8 +15,8 @@ __pycache__/                          # Folder cache Python
 # Virtual environments
 .venv/
 venv/                          # Virtual environment umum
-env/                                  # Virtual environment umum
-
+.env/                                  # Virtual environment umum
+env/ 
 # =========================================================
 # UPLOADED MEDIA & LOG
 # =========================================================
